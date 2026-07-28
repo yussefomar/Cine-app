@@ -7,6 +7,6 @@ use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 
 final class Kernel extends BaseKernel
 {
-    use MicroKernelTrait;
+    use MicroKernelTrait;;
 }
 
