@@ -1,0 +1,51 @@
+services:
+  backend:
+    build:
+      context: .
+    ports:
+      - "8081:80"
+    volumes:
+      - .:/var/www/html
+      - backend_vendor:/var/www/html/vendor
+    environment:
+      APP_ENV: dev
+      APP_SECRET: docker-local-secret-change-in-production
+      DATABASE_URL: mysql://cine:cine@database:3306/cine?serverVersion=mariadb-10.11.0&charset=utf8mb4
+      CORS_ALLOW_ORIGIN: http://localhost:5173
+      DEFAULT_URI: http://localhost:8081
+    depends_on:
+      database:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - frontend_node_modules:/app/node_modules
+    environment:
+      VITE_API_URL: http://localhost:8081/api
+    depends_on:
+      - backend
+
+  database:
+    image: mariadb:10.11
+    environment:
+      MARIADB_DATABASE: cine
+      MARIADB_USER: cine
+      MARIADB_PASSWORD: cine
+      MARIADB_ROOT_PASSWORD: root
+    volumes:
+      - database_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+volumes:
+  backend_vendor:
+  frontend_node_modules:
+  database_data:

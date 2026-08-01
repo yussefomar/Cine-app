@@ -1,0 +1,14 @@
+.git
+.gitignore
+.idea
+.vscode
+.qodo
+.env.local
+.env.*.local
+vendor
+var
+frontend
+*.sql
+*.sql.gz
+*.log
+Guia_despliegue_Symfony_React_Hostinger.pptx

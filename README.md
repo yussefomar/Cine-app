@@ -3,8 +3,9 @@
 Aplicación de cine con una API construida en Symfony 7.4, Doctrine ORM y
 MariaDB/MySQL, y un frontend desarrollado con React, Vite y Bootstrap.
 
-Para desarrollo local se utilizan Apache, PHP y MariaDB de XAMPP. Docker no es
-necesario.
+El proyecto ofrece dos alternativas de desarrollo local: XAMPP o Docker. El
+código de React y Symfony es el mismo; sólo cambia el entorno que ejecuta cada
+servicio y sus variables de conexión.
 
 ## Requisitos
 
@@ -12,6 +13,7 @@ necesario.
 - XAMPP con PHP 8.2 o superior, Apache y MySQL/MariaDB.
 - Composer 2.
 - Node.js 18 o superior y npm.
+- Opcional: Docker Desktop con Docker Compose, si no se desea usar XAMPP.
 
 Comprobar las herramientas:
 
@@ -23,7 +25,7 @@ node --version
 npm --version
 ```
 
-## 1. Descargar el proyecto
+## Descargar el proyecto
 
 La opción más sencilla es clonarlo directamente dentro de `htdocs`:
 
@@ -45,7 +47,9 @@ New-Item -ItemType Junction `
   -Target C:\ruta\donde\clonaste\Cine-app
 ```
 
-## 2. Instalar el backend
+## Alternativa A — Ejecutar con XAMPP
+
+### 1. Instalar el backend
 
 Desde la raíz del proyecto:
 
@@ -74,7 +78,7 @@ DATABASE_URL="mysql://USUARIO:CONTRASENA@127.0.0.1:3306/cine?serverVersion=maria
 
 `.env.local` está ignorado por Git y no debe subirse al repositorio.
 
-## 3. Iniciar XAMPP y preparar la base
+### 2. Iniciar XAMPP y preparar la base
 
 Abrir **XAMPP Control Panel** e iniciar:
 
@@ -119,7 +123,7 @@ Listar las rutas desde Symfony:
 C:\xampp\php\php.exe bin\console debug:router
 ```
 
-## 4. Instalar y ejecutar el frontend
+### 3. Instalar y ejecutar el frontend
 
 Abrir otra terminal desde la raíz del proyecto:
 
@@ -141,7 +145,7 @@ La URL local de la API está configurada en `frontend/.env.development`:
 VITE_API_URL=http://localhost/cine-app/public/api
 ```
 
-## 5. Verificación completa
+### 4. Verificación completa
 
 1. Confirmar que Apache y MySQL estén activos en XAMPP.
 2. Abrir `http://localhost/cine-app/public/api/health`.
@@ -149,6 +153,72 @@ VITE_API_URL=http://localhost/cine-app/public/api
 4. Entrar en la cartelera.
 5. Cambiar la fecha y comprobar que la petición incluye `?fecha=AAAA-MM-DD`.
 6. Abrir DevTools → Network → Fetch/XHR para inspeccionar la respuesta de la API.
+
+## Alternativa B — Ejecutar con Docker
+
+Esta alternativa no requiere Apache, PHP, MariaDB, Composer ni Node instalados
+directamente para el proyecto. Docker ejecuta tres servicios:
+
+```text
+frontend   React + Vite       http://localhost:5173
+backend    Symfony + Apache   http://localhost:8081
+database   MariaDB            red interna de Docker
+```
+
+No iniciar simultáneamente el frontend de XAMPP/local y el de Docker, porque
+ambos intentarán utilizar el puerto `5173`.
+
+Desde la raíz del repositorio:
+
+```powershell
+docker compose up --build -d
+```
+
+Crear las tablas y cargar los datos iniciales:
+
+```powershell
+docker compose exec backend php bin/console doctrine:migrations:migrate --no-interaction
+```
+
+Comprobar los servicios:
+
+```text
+Frontend: http://localhost:5173
+API:      http://localhost:8081/api/health
+```
+
+Ver los logs:
+
+```powershell
+docker compose logs -f backend
+docker compose logs -f frontend
+docker compose logs -f database
+```
+
+Detener los contenedores sin borrar la base:
+
+```powershell
+docker compose down
+```
+
+Los datos de MariaDB se conservan en el volumen `database_data`. Para reiniciar
+deliberadamente todo desde cero se puede usar `docker compose down -v`, pero ese
+comando elimina la base Docker y sus datos.
+
+### Por qué el código no cambia
+
+Docker Compose sobrescribe las variables necesarias para sus contenedores:
+
+```text
+XAMPP backend: 127.0.0.1:3306
+Docker backend: database:3306
+
+XAMPP frontend API: http://localhost/cine-app/public/api
+Docker frontend API: http://localhost:8081/api
+```
+
+Por eso Controllers, Repositories, entidades, componentes, páginas y hooks son
+idénticos en ambas alternativas.
 
 ## Estructura principal
 

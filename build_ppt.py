@@ -227,6 +227,12 @@ card(s,"2 · BASE DE DATOS","Desde la raíz:\n\nC:\\xampp\\php\\php.exe\nbin\\co
 card(s,"3 · FRONTEND REACT","Desde la raíz:\n\ncd frontend\nnpm install\nnpm run dev\n\nAbrir:\nhttp://localhost:5173",8.95,2.0,3.95,3.85,O,"VITE")
 box(s,.7,6.2,11.9,.62,N2,True); txt(s,"Resumen: Backend = Apache + MySQL de XAMPP   |   Frontend = cd frontend && npm run dev",.95,6.4,11.4,.25,13,W,True,"Consolas",PP_ALIGN.CENTER)
 
+s=base("ALTERNATIVA",31,"También se puede ejecutar con Docker","El código de React y Symfony no cambia: Docker Compose proporciona PHP, Apache, Node y MariaDB y sobrescribe las URLs mediante variables.")
+card(s,"ARQUITECTURA","frontend\nReact + Vite :5173\n\nbackend\nSymfony + Apache :8081\n\ndatabase\nMariaDB interno",.4,2.0,3.25,3.9,C,"3 SERVICIOS")
+card(s,"INICIAR","Desde la raíz:\n\ndocker compose up\n  --build -d\n\ndocker compose exec backend\n  php bin/console\n  doctrine:migrations:migrate\n  --no-interaction",3.95,2.0,4.15,3.9,G,"COMANDOS")
+card(s,"ELEGIR ENTORNO","XAMPP API:\nlocalhost/cine-app/public/api\n\nDocker API:\nlocalhost:8081/api\n\nFrontend en ambos:\nlocalhost:5173\n\nNo iniciar ambos Vite a la vez.",8.4,2.0,4.5,3.9,O,"XAMPP O DOCKER")
+box(s,.7,6.25,11.9,.62,N2,True); txt(s,"Sin cambios de lógica: Controllers, Repositories, entidades, componentes, páginas y hooks son los mismos.",.95,6.45,11.4,.25,13,W,True,align=PP_ALIGN.CENTER)
+
 def divider(section, title, body, accent):
  s=prs.slides.add_slide(prs.slide_layouts[6]); s.background.fill.solid(); s.background.fill.fore_color.rgb=N
  box(s,0,0,.18,7.5,accent); txt(s,section,.75,.75,4,.3,12,accent,True)
@@ -240,10 +246,10 @@ divider("PARTE 3", "Producción", "Cómo transformar el proyecto local con XAMPP
 
 # Orden narrativo: backend → frontend/HTTP → producción → referencias.
 order = [
- 0, 29,
- 31, 13, 26, 20, 15, 16, 17, 18, 19, 2,
- 30, 23, 24, 25, 7, 8, 14, 21, 22, 12,
- 32, 1, 3, 4, 27, 5, 6, 9, 10, 11,
+ 0, 29, 30,
+ 32, 13, 26, 20, 15, 16, 17, 18, 19, 2,
+ 31, 23, 24, 25, 7, 8, 14, 21, 22, 12,
+ 33, 1, 3, 4, 27, 5, 6, 9, 10, 11,
   28,
 ]
 slide_ids = list(prs.slides._sldIdLst)
