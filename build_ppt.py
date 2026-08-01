@@ -107,7 +107,7 @@ card(s,"GET /api/funciones","Archivo:\nsrc/Controller/FuncionController.php\nMé
 card(s,"GET /api/funciones/{id}/asientos","Archivo:\nsrc/Controller/FuncionController.php\nMétodo: seats()\n\nDevuelve asientos de una función.",8.98,2.05,3.8,2.25,O)
 card(s,"QUIÉN LOS CONSUME","hooks/useMovies.js: api('/funciones')\npages/SeatsPage.jsx: api('/funciones/{id}/asientos')",.55,4.65,5.85,1.45,O)
 card(s,"QUIÉN ARMA LA URL","frontend/src/services/api.js\nBase local: http://localhost/cine-app/public/api",6.78,4.65,6,1.45,C)
-txt(s,"Ver todas las rutas:  C:\\xampp\\php\\php.exe bin\\console debug:router",.7,6.45,11.9,.35,14,G,True,"Consolas",PP_ALIGN.CENTER)
+txt(s,"Con Docker:  docker compose exec backend php bin/console debug:router",.7,6.45,11.9,.35,14,G,True,"Consolas",PP_ALIGN.CENTER)
 
 s=base("HTTP",15,"Cómo pide recursos el frontend","HTTP es el protocolo de comunicación entre el navegador y el servidor.")
 card(s,"GET · LEER","Pide un recurso sin modificarlo.\n\nGET /api/funciones\nGET /api/funciones/5/asientos\n\nRespuesta habitual: 200 OK",.45,2.05,2.85,3.75,C,"ACTUAL")
@@ -233,6 +233,12 @@ card(s,"INICIAR","Desde la raíz:\n\ndocker compose up\n  --build -d\n\ndocker c
 card(s,"ELEGIR ENTORNO","XAMPP API:\nlocalhost/cine-app/public/api\n\nDocker API:\nlocalhost:8081/api\n\nFrontend en ambos:\nlocalhost:5173\n\nNo iniciar ambos Vite a la vez.",8.4,2.0,4.5,3.9,O,"XAMPP O DOCKER")
 box(s,.7,6.25,11.9,.62,N2,True); txt(s,"Sin cambios de lógica: Controllers, Repositories, entidades, componentes, páginas y hooks son los mismos.",.95,6.45,11.4,.25,13,W,True,align=PP_ALIGN.CENTER)
 
+s=base("DOCKER",32,"Comandos útiles y acceso a MariaDB","Ejecutar desde la raíz del proyecto. Dentro de Docker no se usa C:\\xampp\\php\\php.exe.")
+card(s,"SYMFONY EN BACKEND","docker compose exec backend php bin/console about\ndocker compose exec backend php bin/console debug:router\ndocker compose exec backend php bin/console doctrine:migrations:status\ndocker compose exec backend php bin/console doctrine:schema:validate\ndocker compose exec backend php bin/console cache:clear",.35,1.9,6.15,3.85,C,"CONTENEDOR")
+card(s,"ENTRAR A MARIADB","docker compose exec database\n  mariadb -u cine -pcine cine\n\nLuego ejecutar:\nSHOW DATABASES;\nUSE cine;\nSHOW TABLES;\nDESCRIBE nombre_tabla;\nSELECT * FROM nombre_tabla LIMIT 20;",6.8,1.9,6.15,3.85,G,"BASE DE DATOS")
+box(s,.55,6.08,12.25,.7,N2,True); txt(s,"Consulta rápida: docker compose exec database mariadb -u cine -pcine cine -e \"SHOW TABLES;\"",.8,6.3,11.75,.27,12,W,True,"Consolas",PP_ALIGN.CENTER)
+txt(s,"Credenciales locales de compose.yaml: base cine · usuario cine · clave cine. No reutilizarlas en producción.",.7,6.86,11.9,.25,10,R,True,align=PP_ALIGN.CENTER)
+
 def divider(section, title, body, accent):
  s=prs.slides.add_slide(prs.slide_layouts[6]); s.background.fill.solid(); s.background.fill.fore_color.rgb=N
  box(s,0,0,.18,7.5,accent); txt(s,section,.75,.75,4,.3,12,accent,True)
@@ -246,10 +252,10 @@ divider("PARTE 3", "Producción", "Cómo transformar el proyecto local con XAMPP
 
 # Orden narrativo: backend → frontend/HTTP → producción → referencias.
 order = [
- 0, 29, 30,
- 32, 13, 26, 20, 15, 16, 17, 18, 19, 2,
- 31, 23, 24, 25, 7, 8, 14, 21, 22, 12,
- 33, 1, 3, 4, 27, 5, 6, 9, 10, 11,
+ 0, 29, 30, 31,
+ 33, 13, 26, 20, 15, 16, 17, 18, 19, 2,
+ 32, 23, 24, 25, 7, 8, 14, 21, 22, 12,
+ 34, 1, 3, 4, 27, 5, 6, 9, 10, 11,
   28,
 ]
 slide_ids = list(prs.slides._sldIdLst)

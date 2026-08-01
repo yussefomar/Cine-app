@@ -242,15 +242,40 @@ frontend/src/        Frontend React
 
 ## Comandos útiles
 
-Ejecutar desde la raíz:
+Con Docker, ejecutar desde la raíz:
 
 ```powershell
-C:\xampp\php\php.exe bin\console about
-C:\xampp\php\php.exe bin\console debug:router
-C:\xampp\php\php.exe bin\console doctrine:migrations:status
-C:\xampp\php\php.exe bin\console doctrine:schema:validate
-C:\xampp\php\php.exe bin\console cache:clear
+docker compose exec backend php bin/console about
+docker compose exec backend php bin/console debug:router
+docker compose exec backend php bin/console doctrine:migrations:status
+docker compose exec backend php bin/console doctrine:schema:validate
+docker compose exec backend php bin/console cache:clear
 ```
+
+Para entrar a MariaDB y ver las tablas:
+
+```powershell
+docker compose exec database mariadb -u cine -pcine cine
+```
+
+Dentro de MariaDB:
+
+```sql
+SHOW DATABASES;
+USE cine;
+SHOW TABLES;
+DESCRIBE nombre_de_la_tabla;
+SELECT * FROM nombre_de_la_tabla LIMIT 20;
+EXIT;
+```
+
+Consulta rápida sin entrar a la consola interactiva:
+
+```powershell
+docker compose exec database mariadb -u cine -pcine cine -e "SHOW TABLES;"
+```
+
+> Los comandos que comienzan con `C:\xampp\php\php.exe` son exclusivos del entorno XAMPP. Dentro de Docker, PHP se ejecuta en el servicio `backend` mediante `docker compose exec backend php`.
 
 Compilar el frontend para producción:
 
