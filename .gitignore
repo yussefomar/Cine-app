@@ -1,9 +1,47 @@
+# Symfony: configuración local y secretos
 /.env.local
+/.env.local.php
 /.env.*.local
-/.phpunit.result.cache
-/.phpunit.cache
+/config/secrets/prod/prod.decrypt.private.php
+/config/*.pem
+/config/*.cer
+/auth.json
+
+# Dependencias y archivos generados por Symfony
 /vendor/
 /var/
+/public/bundles/
+/.phpunit.result.cache
+/.phpunit.cache
+/coverage/
+
+# React / Vite
+/frontend/node_modules/
+/frontend/dist/
+/frontend/coverage/
+/frontend/.env.local
+/frontend/.env.*.local
+/frontend/*.log
+
+# Editores y herramientas locales
 /.idea/
 /.vscode/
+/.qodo/
+*.code-workspace
 
+# Sistema operativo
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Logs y archivos temporales
+*.log
+*.tmp
+*.temp
+*.swp
+*~
+
+# Backups locales de base de datos
+*.sql
+*.sql.gz
+*.dump

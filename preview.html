@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Historias de Usuario - Venta de entradas de cine</title>
+  <style>
+    :root {
+      --bg: #eef5ff;
+      --card: #ffffff;
+      --primary: #2563eb;
+      --primary-dark: #1e3a8a;
+      --secondary: #16a34a;
+      --accent: #f59e0b;
+      --text: #1f2937;
+      --muted: #64748b;
+      --border: #dbeafe;
+      --shadow: 0 14px 35px rgba(30, 58, 138, 0.14);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(135deg, #eef5ff 0%, #ffffff 55%, #f0fdf4 100%);
+      color: var(--text);
+      line-height: 1.55;
+    }
+
+    .page {
+      width: min(1100px, 94%);
+      margin: 40px auto;
+    }
+
+    .hero {
+      background: var(--card);
+      border: 2px solid var(--border);
+      border-radius: 26px;
+      padding: 34px;
+      box-shadow: var(--shadow);
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .hero h1 {
+      margin: 0 0 10px;
+      font-size: clamp(30px, 5vw, 54px);
+      color: var(--primary-dark);
+    }
+
+    .hero p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 18px;
+    }
+
+    .formatos {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 18px;
+      margin-bottom: 28px;
+    }
+
+    .format-card {
+      background: #fff;
+      border-radius: 20px;
+      border: 2px solid var(--border);
+      padding: 22px;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+    }
+
+    .format-card h2 {
+      margin: 0 0 12px;
+      color: var(--primary-dark);
+      font-size: 22px;
+    }
+
+    .formula {
+      padding: 14px 16px;
+      background: #eff6ff;
+      border-left: 6px solid var(--primary);
+      border-radius: 12px;
+      font-size: 19px;
+      font-weight: 700;
+    }
+
+    .formula span { color: var(--primary); }
+
+    details {
+      background: var(--card);
+      border: 2px solid var(--border);
+      border-radius: 22px;
+      margin-bottom: 18px;
+      box-shadow: 0 10px 28px rgba(15, 23, 42, 0.08);
+      overflow: hidden;
+    }
+
+    summary {
+      cursor: pointer;
+      list-style: none;
+      padding: 24px 28px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--primary-dark);
+      background: linear-gradient(90deg, #dbeafe, #ffffff);
+    }
+
+    summary::-webkit-details-marker { display: none; }
+
+    .arrow {
+      width: 34px;
+      height: 34px;
+      display: inline-grid;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--primary);
+      color: #fff;
+      font-size: 18px;
+      transition: transform 0.2s ease;
+      flex: 0 0 auto;
+    }
+
+    details[open] > summary .arrow { transform: rotate(90deg); }
+
+    .content { padding: 24px 28px 30px; }
+
+    .domain-history .content {
+      display: grid;
+      gap: 18px;
+    }
+
+    .domain-history img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border: 2px solid var(--border);
+      border-radius: 16px;
+      background: #fff;
+    }
+
+    .epic-story {
+      border-left: 7px solid var(--primary);
+      background: #f8fbff;
+      padding: 18px 20px;
+      border-radius: 16px;
+      margin-bottom: 22px;
+      font-size: 18px;
+    }
+
+    .epic-image {
+      display: block;
+      width: 100%;
+      height: auto;
+      border: 2px solid var(--border);
+      border-radius: 16px;
+      background: #fff;
+      margin-bottom: 22px;
+    }
+
+    .highlight {
+      font-weight: 800;
+      color: var(--primary-dark);
+    }
+
+    .hu-list {
+      display: grid;
+      gap: 16px;
+    }
+
+    .hu details {
+      margin: 0;
+      border-color: #dcfce7;
+      border-radius: 18px;
+      box-shadow: none;
+    }
+
+    .hu summary {
+      background: linear-gradient(90deg, #dcfce7, #ffffff);
+      color: #14532d;
+      font-size: 20px;
+      padding: 18px 22px;
+    }
+
+    .hu .arrow { background: var(--secondary); }
+
+    .story-box {
+      background: #ffffff;
+      border: 1px solid #dcfce7;
+      border-radius: 16px;
+      padding: 18px;
+      margin-bottom: 18px;
+    }
+
+    .story-box h3, .criteria h3 {
+      margin: 0 0 10px;
+      color: #14532d;
+      font-size: 18px;
+    }
+
+    .criteria {
+      background: #fff7ed;
+      border: 1px solid #fed7aa;
+      border-radius: 16px;
+      padding: 18px;
+    }
+
+    .scenario {
+      background: #ffffff;
+      border-left: 6px solid var(--accent);
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-top: 12px;
+    }
+
+    .scenario-title {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 800;
+      border-radius: 999px;
+      padding: 4px 12px;
+      margin-bottom: 8px;
+    }
+
+    .gherkin strong {
+      color: #9a3412;
+      font-size: 18px;
+    }
+
+    .tag {
+      display: inline-block;
+      background: #e0f2fe;
+      color: #075985;
+      border: 1px solid #bae6fd;
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 14px;
+      font-weight: 700;
+      margin-right: 8px;
+    }
+
+    footer {
+      text-align: center;
+      color: var(--muted);
+      margin-top: 30px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <details class="domain-history">
+      <summary><span class="arrow">&#9654;</span> Historia de dominio</summary>
+      <div class="content">
+        <p>Es una representación visual y sencilla de cómo las personas, los objetos y las acciones interactúan dentro de un negocio o sistema para lograr un objetivo.</p>
+        <p><strong>Ejemplo en un cine:</strong></p>
+        <p>El cliente solicita una entrada, el cajero consulta las funciones, selecciona un asiento, cobra y entrega el ticket.</p>
+        <p>La historia de dominio describe lo que ocurre en el negocio, sin entrar en detalles técnicos de programación o bases de datos.</p>
+        <img src="asset/img/anecdota.png" alt="Anecdota de la venta de entradas de cine" />
+        <img src="asset/img/historiadominio.png" alt="Historia de dominio de la venta de entradas de cine" />
+      </div>
+    </details>
+
+    <details open>
+      <summary><span class="arrow">&#9654;</span> Historias de Usuario</summary>
+      <div class="content">
+    <section class="hero">
+      <h1>Historias de Usuario</h1>
+      <p>Sistema de venta de entradas de cine con épica, historias y criterios desplegables.</p>
+    </section>
+
+    <section class="formatos">
+      <article class="format-card">
+        <h2>Formato de Historia de Usuario</h2>
+        <p>Es una descripción breve de una funcionalidad vista desde la perspectiva de quien la va a usar.</p>
+        <div class="formula">Como <span>&lt;actor&gt;</span>, quiero poder <span>&lt;función&gt;</span> para poder <span>&lt;razón&gt;</span></div>
+      </article>
+      <article class="format-card">
+        <h2>Formato de Criterios de Aceptación</h2>
+        <p>Los criterios de aceptación son las condiciones que deben cumplirse para considerar que la historia de usuario está terminada correctamente. Responden a: ¿Cómo sabemos que funciona? ¿Qué debe pasar? ¿Qué no debe pasar?</p>
+        <div class="formula">Dado que <span>&lt;contexto&gt;</span>, cuando <span>&lt;acción&gt;</span>, entonces <span>&lt;consecuencia&gt;</span></div>
+      </article>
+    </section>
+      </div>
+    </details>
+
+    <details open>
+      <summary><span class="arrow">▶</span> ÉPICA: Venta de entradas de cine</summary>
+      <div class="content">
+        <div class="epic-story">
+          <span class="tag">Épica</span>
+          <span class="highlight">Como</span> cinéfilo, <span class="highlight">quiero</span> comprar una entrada para una función de cine <span class="highlight">para poder</span> asistir a la película seleccionada.
+        </div>
+
+        <img class="epic-image" src="asset/img/epica.png" alt="Epica de venta de entradas de cine" />
+
+        <div class="hu-list">
+          <article class="hu">
+            <details>
+              <summary><span class="arrow">▶</span> HU1: Consultar funciones disponibles</summary>
+              <div class="content">
+                <div class="story-box"><h3>Historia de Usuario</h3><p><strong>Como</strong> cliente, <strong>quiero</strong> consultar las funciones disponibles <strong>para poder</strong> elegir una película y horario.</p></div>
+                <div class="criteria"><h3>Criterios de Aceptación</h3><div class="scenario"><span class="scenario-title">Escenario 1</span><p class="gherkin"><strong>Dado que</strong> soy cliente, <strong>cuando</strong> consulto las funciones disponibles, <strong>entonces</strong> el sistema me muestra las películas y horarios disponibles.</p></div><div class="scenario"><span class="scenario-title">Escenario 2</span><p class="gherkin"><strong>Dado que</strong> soy cliente, <strong>cuando</strong> consulto las funciones disponibles y no existen funciones, <strong>entonces</strong> el sistema informa que no hay funciones disponibles.</p></div></div>
+              </div>
+            </details>
+          </article>
+
+          <article class="hu"><details><summary><span class="arrow">▶</span> HU2: Consultar asientos disponibles</summary><div class="content"><div class="story-box"><h3>Historia de Usuario</h3><p><strong>Como</strong> cajero, <strong>quiero</strong> consultar los asientos disponibles de una función <strong>para poder</strong> ofrecer opciones al cliente.</p></div><div class="criteria"><h3>Criterios de Aceptación</h3><div class="scenario"><span class="scenario-title">Escenario 1</span><p class="gherkin"><strong>Dado que</strong> soy cajero, <strong>cuando</strong> consulto los asientos disponibles, <strong>entonces</strong> el sistema muestra los asientos libres.</p></div><div class="scenario"><span class="scenario-title">Escenario 2</span><p class="gherkin"><strong>Dado que</strong> soy cajero, <strong>cuando</strong> consulto los asientos disponibles y la sala está completa, <strong>entonces</strong> el sistema informa que no hay asientos disponibles.</p></div></div></div></details></article>
+
+          <article class="hu"><details><summary><span class="arrow">▶</span> HU3: Seleccionar asiento</summary><div class="content"><div class="story-box"><h3>Historia de Usuario</h3><p><strong>Como</strong> cliente, <strong>quiero</strong> seleccionar un asiento <strong>para poder</strong> reservar mi ubicación en la sala.</p></div><div class="criteria"><h3>Criterios de Aceptación</h3><div class="scenario"><span class="scenario-title">Escenario 1</span><p class="gherkin"><strong>Dado que</strong> soy cliente y el asiento está disponible, <strong>cuando</strong> selecciono el asiento, <strong>entonces</strong> el sistema registra la selección.</p></div><div class="scenario"><span class="scenario-title">Escenario 2</span><p class="gherkin"><strong>Dado que</strong> soy cliente y el asiento está ocupado, <strong>cuando</strong> intento seleccionarlo, <strong>entonces</strong> el sistema informa que el asiento no está disponible.</p></div></div></div></details></article>
+
+          <article class="hu"><details><summary><span class="arrow">▶</span> HU4: Registrar venta de entrada</summary><div class="content"><div class="story-box"><h3>Historia de Usuario</h3><p><strong>Como</strong> cajero, <strong>quiero</strong> registrar la venta de una entrada <strong>para poder</strong> emitir el ticket correspondiente.</p></div><div class="criteria"><h3>Criterios de Aceptación</h3><div class="scenario"><span class="scenario-title">Escenario 1</span><p class="gherkin"><strong>Dado que</strong> soy cajero y existe un asiento seleccionado, <strong>cuando</strong> confirmo la venta, <strong>entonces</strong> el sistema genera un ticket.</p></div><div class="scenario"><span class="scenario-title">Escenario 2</span><p class="gherkin"><strong>Dado que</strong> soy cajero y no existe un asiento seleccionado, <strong>cuando</strong> intento confirmar la venta, <strong>entonces</strong> el sistema informa que debe seleccionarse un asiento.</p></div></div></div></details></article>
+
+          <article class="hu"><details><summary><span class="arrow">▶</span> HU5: Marcar asiento como vendido</summary><div class="content"><div class="story-box"><h3>Historia de Usuario</h3><p><strong>Como</strong> cajero, <strong>quiero</strong> marcar un asiento como vendido <strong>para poder</strong> evitar ventas duplicadas.</p></div><div class="criteria"><h3>Criterios de Aceptación</h3><div class="scenario"><span class="scenario-title">Escenario 1</span><p class="gherkin"><strong>Dado que</strong> una venta fue confirmada, <strong>cuando</strong> se genera el ticket, <strong>entonces</strong> el asiento queda marcado como vendido.</p></div></div></div></details></article>
+
+          <article class="hu"><details><summary><span class="arrow">▶</span> HU6: Calcular precio de la entrada</summary><div class="content"><div class="story-box"><h3>Historia de Usuario</h3><p><strong>Como</strong> cliente, <strong>quiero</strong> conocer el precio de una entrada <strong>para poder</strong> decidir si realizar la compra.</p></div><div class="criteria"><h3>Criterios de Aceptación</h3><div class="scenario"><span class="scenario-title">Escenario 1</span><p class="gherkin"><strong>Dado que</strong> soy cliente y no poseo suscripción, <strong>cuando</strong> consulto el precio, <strong>entonces</strong> el sistema muestra el precio completo.</p></div><div class="scenario"><span class="scenario-title">Escenario 2</span><p class="gherkin"><strong>Dado que</strong> soy cliente y poseo una suscripción válida, <strong>cuando</strong> consulto el precio, <strong>entonces</strong> el sistema muestra el precio con descuento.</p></div></div></div></details></article>
+
+          <article class="hu"><details><summary><span class="arrow">▶</span> HU7: Pagar entrada</summary><div class="content"><div class="story-box"><h3>Historia de Usuario</h3><p><strong>Como</strong> cliente, <strong>quiero</strong> pagar una entrada <strong>para poder</strong> obtener el ticket de acceso a la función.</p></div><div class="criteria"><h3>Criterios de Aceptación</h3><div class="scenario"><span class="scenario-title">Escenario 1</span><p class="gherkin"><strong>Dado que</strong> soy cliente y existe un ticket generado, <strong>cuando</strong> realizo el pago, <strong>entonces</strong> el sistema confirma la compra.</p></div><div class="scenario"><span class="scenario-title">Escenario 2</span><p class="gherkin"><strong>Dado que</strong> el medio de pago es rechazado, <strong>cuando</strong> realizo el pago, <strong>entonces</strong> el sistema informa que la operación no pudo completarse.</p></div></div></div></details></article>
+
+          <article class="hu"><details><summary><span class="arrow">▶</span> HU8: Entregar ticket</summary><div class="content"><div class="story-box"><h3>Historia de Usuario</h3><p><strong>Como</strong> cajero, <strong>quiero</strong> entregar el ticket al cliente <strong>para poder</strong> permitir su ingreso a la función.</p></div><div class="criteria"><h3>Criterios de Aceptación</h3><div class="scenario"><span class="scenario-title">Escenario 1</span><p class="gherkin"><strong>Dado que</strong> la compra fue confirmada, <strong>cuando</strong> entrego el ticket al cliente, <strong>entonces</strong> el cliente recibe el comprobante de ingreso.</p></div></div></div></details></article>
+        </div>
+      </div>
+    </details>
+
+    <details>
+      <summary><span class="arrow">&#9654;</span> Modelo de dominio</summary>
+      <div class="content">
+        <p>Un modelo de dominio es una representación conceptual de los elementos principales de un sistema, sus relaciones y reglas dentro del negocio.</p>
+        <p>Por cada historia de dominio vamos a crear un modelo de dominio particular, y gracias a las historias de usuario que encontramos nos va a ayudar a descubrir objetos del dominio.</p>
+        <p><strong>Por ejemplo HU: Consultar funciones</strong></p>
+        <p>Cliente<br />Función<br />Película</p>
+        <p><strong>HU: Seleccionar asiento</strong></p>
+        <p>Cliente<br />Asiento<br />Sala</p>
+        <p><strong>HU: Pagar entrada</strong></p>
+        <p>Cliente<br />Pago<br />Entrada</p>
+        <img class="epic-image" src="asset/img/sala_cine_real.drawio.png" alt="Modelo de dominio de sala de cine" />
+      </div>
+    </details>
+
+    <details>
+      <summary><span class="arrow">&#9654;</span> Prototipo de interfaces de usuario</summary>
+      <div class="content">
+        <p>Un prototipo de interfaces de usuario es una representación visual inicial de las pantallas del sistema, usada para mostrar cómo el usuario interactuará con sus funciones principales.</p>
+        <p>A partir de las historias de usuario se desarrolla el prototipo de las interfaces de usuario correspondientes.</p>
+        <p>El prototipo debe ser consistente con las historias de usuario y el modelo de dominio, y debe incluir ejemplos de datos en cada campo.</p>
+        <p><strong>1- Prototipo para esta Historia de Usuario:</strong> Como cliente, quiero consultar las funciones disponibles para poder elegir una película y horario.</p>
+        <img class="epic-image" src="asset/img/proto1.png" alt="Prototipo para consultar funciones disponibles" />
+        <p><strong>2- Historia de Usuario:</strong> Como cajero, quiero marcar un asiento como vendido para poder evitar ventas duplicadas.</p>
+        <img class="epic-image" src="asset/img/proto2.png" alt="Prototipo para marcar asiento como vendido" />
+      </div>
+    </details>
+
+    <details>
+      <summary><span class="arrow">&#9654;</span> Tasks (Jira)</summary>
+      <div class="content">
+        <p>Las Tasks representan trabajos técnicos o transversales necesarios para el proyecto que no describen directamente una necesidad del usuario.</p>
+        <p>En la jerarquía estándar de Jira están al mismo nivel que las Historias de Usuario y pueden pertenecer directamente a la épica.</p>
+        <p><strong>Épica relacionada:</strong> Venta de entradas de cine</p>
+
+        <div class="hu-list">
+          <article class="hu"><details><summary><span class="arrow">&#9654;</span> TASK 1: Configurar el backend con Symfony</summary><div class="content">
+            <p><strong>Subtasks de la Task</strong></p>
+            <p>[ ] Crear el proyecto Symfony</p>
+            <p>[ ] Configurar las variables de entorno</p>
+            <p>[ ] Instalar y configurar Doctrine ORM</p>
+            <p>[ ] Definir la estructura de controladores, servicios y repositorios</p>
+            <p>[ ] Configurar validaciones y manejo global de errores</p>
+            <p>[ ] Instalar y configurar PHPUnit</p>
+          </div></details></article>
+
+          <article class="hu"><details><summary><span class="arrow">&#9654;</span> TASK 2: Configurar el frontend con React y Bootstrap</summary><div class="content">
+            <p><strong>Subtasks de la Task</strong></p>
+            <p>[ ] Crear el proyecto React</p>
+            <p>[ ] Instalar y configurar Bootstrap</p>
+            <p>[ ] Instalar y configurar React Router</p>
+            <p>[ ] Definir la estructura de páginas, componentes y servicios</p>
+            <p>[ ] Configurar las variables de entorno</p>
+            <p>[ ] Crear estilos y componentes visuales base</p>
+          </div></details></article>
+
+          <article class="hu"><details><summary><span class="arrow">&#9654;</span> TASK 3: Configurar la base de datos</summary><div class="content">
+            <p><strong>Subtasks de la Task</strong></p>
+            <p>[ ] Seleccionar el motor de base de datos</p>
+            <p>[ ] Crear la base de datos para desarrollo</p>
+            <p>[ ] Configurar la conexión desde Symfony</p>
+            <p>[ ] Definir convenciones para tablas, claves y relaciones</p>
+            <p>[ ] Configurar migraciones y datos iniciales</p>
+            <p>[ ] Preparar una estrategia de copias de seguridad</p>
+          </div></details></article>
+
+          <article class="hu"><details><summary><span class="arrow">&#9654;</span> TASK 4: Configurar la integración entre React y Symfony</summary><div class="content">
+            <p><strong>Subtasks de la Task</strong></p>
+            <p>[ ] Definir la URL base y la versión de la API</p>
+            <p>[ ] Configurar CORS en Symfony</p>
+            <p>[ ] Crear el cliente HTTP reutilizable en React</p>
+            <p>[ ] Definir el formato estándar de respuestas y errores JSON</p>
+            <p>[ ] Configurar los entornos de desarrollo y producción</p>
+            <p>[ ] Verificar la comunicación entre frontend y backend</p>
+          </div></details></article>
+
+          <article class="hu"><details><summary><span class="arrow">&#9654;</span> TASK 5: Configurar seguridad y autenticación</summary><div class="content">
+            <p><strong>Subtasks de la Task</strong></p>
+            <p>[ ] Definir roles y permisos del sistema</p>
+            <p>[ ] Configurar Symfony Security</p>
+            <p>[ ] Implementar autenticación mediante token</p>
+            <p>[ ] Proteger los endpoints privados</p>
+            <p>[ ] Implementar rutas protegidas en React</p>
+            <p>[ ] Configurar el almacenamiento seguro de credenciales</p>
+          </div></details></article>
+
+          <article class="hu"><details><summary><span class="arrow">&#9654;</span> TASK 6: Preparar el entorno con Docker</summary><div class="content">
+            <p><strong>Subtasks de la Task</strong></p>
+            <p>[ ] Crear contenedor para Symfony</p>
+            <p>[ ] Crear contenedor para React</p>
+            <p>[ ] Crear contenedor para la base de datos</p>
+            <p>[ ] Configurar Docker Compose</p>
+            <p>[ ] Configurar volúmenes y variables de entorno</p>
+            <p>[ ] Documentar los comandos para iniciar el proyecto</p>
+          </div></details></article>
+
+          <article class="hu"><details><summary><span class="arrow">&#9654;</span> TASK 7: Configurar integración continua y despliegue</summary><div class="content">
+            <p><strong>Subtasks de la Task</strong></p>
+            <p>[ ] Configurar el repositorio y la estrategia de ramas</p>
+            <p>[ ] Ejecutar automáticamente las pruebas del backend</p>
+            <p>[ ] Ejecutar automáticamente las pruebas del frontend</p>
+            <p>[ ] Configurar análisis de calidad del código</p>
+            <p>[ ] Generar la compilación de producción</p>
+            <p>[ ] Documentar el proceso de despliegue</p>
+          </div></details></article>
+        </div>
+      </div>
+    </details>
+
+    <details>
+      <summary><span class="arrow">&#9654;</span> Subtasks (Jira)</summary>
+      <div class="content">
+        <p>Las subtasks son el trabajo técnico que debe hacer el equipo para cumplir la HU y sus criterios.</p>
+        <p>No describen necesidades del usuario.</p>
+        <p>Describen tareas concretas de implementación.</p>
+        <div class="hu-list">
+          <article class="hu"><details><summary><span class="arrow">&#9654;</span> HU1: Consultar funciones disponibles</summary><div class="content">
+            <p><strong>Subtasks</strong></p>
+            <p>[ ] Crear tablas y relaciones para películas, salas y funciones</p>
+            <p>[ ] Implementar consulta de funciones disponibles por fecha</p>
+            <p>[ ] Crear endpoint GET /funciones</p>
+            <p>[ ] Diseñar pantalla de cartelera con películas y horarios</p>
+            <p>[ ] Mostrar mensaje cuando no existan funciones disponibles</p>
+            <p>[ ] Agregar filtros por película, fecha y horario</p>
+            <p>[ ] Realizar pruebas unitarias y de integración</p>
+          </div></details></article>
+
+          <article class="hu"><details><summary><span class="arrow">&#9654;</span> HU2: Consultar asientos disponibles</summary><div class="content">
+            <p><strong>Subtasks</strong></p>
+            <p>[ ] Crear tablas y relaciones para salas y asientos</p>
+            <p>[ ] Implementar consulta de asientos disponibles por función</p>
+            <p>[ ] Crear endpoint GET /funciones/{id}/asientos</p>
+            <p>[ ] Diseñar el plano visual de la sala</p>
+            <p>[ ] Diferenciar visualmente asientos libres y ocupados</p>
+            <p>[ ] Mostrar mensaje cuando la sala esté completa</p>
+            <p>[ ] Realizar pruebas unitarias y de integración</p>
+          </div></details></article>
+
+          <article class="hu"><details><summary><span class="arrow">&#9654;</span> HU3: Seleccionar asiento</summary><div class="content">
+            <p><strong>Subtasks</strong></p>
+            <p>[ ] Implementar método seleccionar_asiento()</p>
+            <p>[ ] Crear endpoint POST /funciones/{id}/asientos/{asientoId}/seleccionar</p>
+            <p>[ ] Validar que el asiento continúe disponible</p>
+            <p>[ ] Registrar una reserva temporal del asiento</p>
+            <p>[ ] Actualizar el plano de sala al seleccionar un asiento</p>
+            <p>[ ] Mostrar mensaje si el asiento ya está ocupado</p>
+            <p>[ ] Realizar pruebas de concurrencia y pruebas unitarias</p>
+          </div></details></article>
+
+          <article class="hu"><details><summary><span class="arrow">&#9654;</span> HU4: Registrar venta de entrada</summary><div class="content">
+            <p><strong>Subtasks</strong></p>
+            <p>[ ] Crear tablas y relaciones para ventas y entradas</p>
+            <p>[ ] Implementar método registrar_venta()</p>
+            <p>[ ] Crear endpoint POST /ventas</p>
+            <p>[ ] Validar que exista un asiento seleccionado</p>
+            <p>[ ] Generar el número único de ticket</p>
+            <p>[ ] Diseñar pantalla de confirmación de venta</p>
+            <p>[ ] Realizar pruebas unitarias y de integración</p>
+          </div></details></article>
+
+          <article class="hu"><details><summary><span class="arrow">&#9654;</span> HU5: Marcar asiento como vendido</summary><div class="content">
+            <p><strong>Subtasks</strong></p>
+            <p>[ ] Crear campo estado_asiento en la base de datos</p>
+            <p>[ ] Implementar método marcar_asiento_vendido()</p>
+            <p>[ ] Actualizar consulta de asientos disponibles</p>
+            <p>[ ] Crear endpoint PUT /asientos/{id}/vender</p>
+            <p>[ ] Modificar pantalla de plano de sala</p>
+            <p>[ ] Agregar validación de asiento ya vendido</p>
+            <p>[ ] Realizar pruebas unitarias</p>
+          </div></details></article>
+
+          <article class="hu"><details><summary><span class="arrow">&#9654;</span> HU6: Calcular precio de la entrada</summary><div class="content">
+            <p><strong>Subtasks</strong></p>
+            <p>[ ] Crear configuración de precios por función y tipo de entrada</p>
+            <p>[ ] Crear tabla de suscripciones y descuentos</p>
+            <p>[ ] Implementar método calcular_precio()</p>
+            <p>[ ] Validar la vigencia de la suscripción del cliente</p>
+            <p>[ ] Crear endpoint GET /funciones/{id}/precio</p>
+            <p>[ ] Mostrar precio base, descuento y total en la pantalla</p>
+            <p>[ ] Realizar pruebas para precios con y sin descuento</p>
+          </div></details></article>
+
+          <article class="hu"><details><summary><span class="arrow">&#9654;</span> HU7: Pagar entrada</summary><div class="content">
+            <p><strong>Subtasks</strong></p>
+            <p>[ ] Crear tablas para pagos y medios de pago</p>
+            <p>[ ] Integrar el servicio o pasarela de pago</p>
+            <p>[ ] Implementar método procesar_pago()</p>
+            <p>[ ] Crear endpoint POST /ventas/{id}/pagos</p>
+            <p>[ ] Registrar pagos aprobados y rechazados</p>
+            <p>[ ] Mostrar confirmación o mensaje de pago rechazado</p>
+            <p>[ ] Realizar pruebas unitarias y pruebas con respuestas simuladas</p>
+          </div></details></article>
+
+          <article class="hu"><details><summary><span class="arrow">&#9654;</span> HU8: Entregar ticket</summary><div class="content">
+            <p><strong>Subtasks</strong></p>
+            <p>[ ] Diseñar la plantilla del ticket</p>
+            <p>[ ] Implementar generación de ticket en formato PDF</p>
+            <p>[ ] Incluir película, función, sala, asiento y código de compra</p>
+            <p>[ ] Generar un código QR único para validar el ingreso</p>
+            <p>[ ] Crear endpoint GET /ventas/{id}/ticket</p>
+            <p>[ ] Agregar opciones para imprimir o descargar el ticket</p>
+            <p>[ ] Validar que el ticket solo se entregue con la compra confirmada</p>
+            <p>[ ] Realizar pruebas de generación y entrega del ticket</p>
+          </div></details></article>
+        </div>
+      </div>
+    </details>
+
+    <details>
+      <summary><span class="arrow">&#9654;</span> Diseño de base de datos</summary>
+      <div class="content">
+        <p>El diseño de base de datos define cómo se organizan, relacionan y almacenan los datos necesarios para que el sistema funcione correctamente.</p>
+        <p>A partir del modelo de dominio ya desarrollado vamos a diseñar la base de datos relacional.</p>
+      </div>
+    </details>
+
+    <footer>Hecho en HTML + CSS usando etiquetas &lt;details&gt; y &lt;summary&gt; para desplegar y ocultar contenido.</footer>
+  </main>
+</body>
+</html>
