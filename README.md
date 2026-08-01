@@ -242,7 +242,21 @@ frontend/src/        Frontend React
 
 ## Comandos útiles
 
-Con Docker, ejecutar desde la raíz:
+### Opción 1: XAMPP
+
+Con Apache y MySQL iniciados desde XAMPP, ejecutar desde la raíz:
+
+```powershell
+C:\xampp\php\php.exe bin\console about
+C:\xampp\php\php.exe bin\console debug:router
+C:\xampp\php\php.exe bin\console doctrine:migrations:status
+C:\xampp\php\php.exe bin\console doctrine:schema:validate
+C:\xampp\php\php.exe bin\console cache:clear
+```
+
+### Opción 2: Docker
+
+Con los contenedores iniciados, ejecutar desde la raíz:
 
 ```powershell
 docker compose exec backend php bin/console about
@@ -275,7 +289,7 @@ Consulta rápida sin entrar a la consola interactiva:
 docker compose exec database mariadb -u cine -pcine cine -e "SHOW TABLES;"
 ```
 
-> Los comandos que comienzan con `C:\xampp\php\php.exe` son exclusivos del entorno XAMPP. Dentro de Docker, PHP se ejecuta en el servicio `backend` mediante `docker compose exec backend php`.
+> Elegir una alternativa según el entorno: `C:\xampp\php\php.exe` para XAMPP o `docker compose exec backend php` para Docker.
 
 Compilar el frontend para producción:
 
