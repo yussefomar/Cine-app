@@ -1,0 +1,13 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # Sirve los archivos generados por Vite desde frontend/dist.
+    RewriteCond %{DOCUMENT_ROOT}/frontend/dist/$1 -f [OR]
+    RewriteCond %{DOCUMENT_ROOT}/frontend/dist/$1 -d
+    RewriteRule ^(.*)$ frontend/dist/$1 [END]
+
+    # Envía las rutas de React al punto de entrada de la aplicación.
+    RewriteRule ^ frontend/dist/index.html [END]
+</IfModule>
+
