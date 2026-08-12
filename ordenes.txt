@@ -1,0 +1,39 @@
+#frontend produccion
+--en local
+
+cd frontend
+npm install -- una vez local
+npm run build --esto se hace cada vez que se hace cambio en el frontend,
+Como Hostinger no tiene Node.js, no puede ejecutar Vite ni generar dist. 
+entonces se general frontend/dist
+npm run dev -- solo para probarlo en local
+public_html/
+├── .htaccess
+├── frontend/
+│   └── dist/
+│       ├── index.html
+│       └── assets/
+├── src/
+├── public/
+└── ...
+
+En public_html/.htaccess usarías para que el 
+ navegador seguirá mostrando las URLs normales; 
+no mostrará /frontend/dist.:
+
+Haz una copia de seguridad del .htaccess actual 
+y de cualquier index.php o index.html ubicado directamente en public_html.
+RewriteEngine On
+
+# Servir archivos y carpetas existentes dentro de frontend/dist
+RewriteCond %{DOCUMENT_ROOT}/frontend/dist/$1 -f [OR]
+RewriteCond %{DOCUMENT_ROOT}/frontend/dist/$1 -d
+RewriteRule ^(.*)$ frontend/dist/$1 [L]
+
+# Cualquier ruta de React carga index.html
+RewriteRule ^ frontend/dist/index.html [L]
+
+
+
+cd frontend
+npm run dev
