@@ -58,7 +58,7 @@ txt(s,"Sin Composer/SSH: generar vendor/ localmente y subirlo junto al backend."
 
 s=base("BACKEND",7,"Apache, CORS y seguridad","Las rutas /api/... necesitan una reescritura correcta.")
 card(s,".HTACCESS","Configurar Apache para enviar rutas Symfony a index.php y probar URLs profundas.",.7,2.2,3.7,2,C)
-card(s,"CORS","Permitir sólo https://tudominio.com si la API usa otro origen. Evitar * en operaciones sensibles.",4.8,2.2,3.7,2,O)
+card(s,"CORS · ARCHIVO .env / .env.local","Desarrollo:\nCORS_ALLOW_ORIGIN=http://localhost:5173\n\nProducción:\nCORS_ALLOW_ORIGIN=https://tudominio.com",4.8,2.2,3.7,2,O)
 card(s,"HTTPS","Activar SSL, forzar HTTPS y actualizar DEFAULT_URI. Evitar contenido mixto.",8.9,2.2,3.7,2,G)
 card(s,"NO PUBLICAR",".env.local · .git · dumps · logs · tests · claves",.7,4.65,5.75,1.35,R); card(s,"PERMISOS","var/cache y var/log escribibles por PHP; el resto, mínimo necesario.",6.85,4.65,5.75,1.35,O)
 
@@ -239,6 +239,14 @@ card(s,"ENTRAR A MARIADB","docker compose exec database\n  mariadb -u cine -pcin
 box(s,.55,6.08,12.25,.7,N2,True); txt(s,"Consulta rápida: docker compose exec database mariadb -u cine -pcine cine -e \"SHOW TABLES;\"",.8,6.3,11.75,.27,12,W,True,"Consolas",PP_ALIGN.CENTER)
 txt(s,"Credenciales locales de compose.yaml: base cine · usuario cine · clave cine. No reutilizarlas en producción.",.7,6.86,11.9,.25,10,R,True,align=PP_ALIGN.CENTER)
 
+s=base("FRONTEND",33,"De /cartelera a la pantalla","React reparte responsabilidades: cada archivo hace una parte del recorrido y una actualización de estado vuelve a dibujar la interfaz.")
+card(s,"1 · APP.JSX","La URL /cartelera coincide con una Route y React monta <BillboardPage />.\n\nVIDA REAL: la cartelera de la entrada indica a qué sala debe ir el visitante.",.3,1.92,3.0,3.75,O,"MAPA")
+card(s,"2 · BILLBOARD + HOOK","BillboardPage llama useMovies(fecha). El hook administra loading, movies y error.\n\nVIDA REAL: el cliente hace un pedido al empleado y espera la respuesta.",3.55,1.92,3.0,3.75,G,"PEDIDO")
+card(s,"3 · API + BACKEND","api.js hace GET /api/funciones?fecha=... Symfony consulta Doctrine y MariaDB y devuelve JSON.\n\nVIDA REAL: el empleado lleva el pedido a depósito y trae la información.",6.8,1.92,3.0,3.75,C,"BÚSQUEDA")
+card(s,"4 · ESTADO + COMPONENTES","setMovies guarda el resultado. React renderiza FunctionCard; elegir un horario navega a SeatsPage.\n\nVIDA REAL: se arma la cartelera y el cliente elige función y asiento.",10.05,1.92,3.0,3.75,R,"PANTALLA")
+box(s,.55,6.05,12.25,.72,N2,True); txt(s,"/cartelera → App.jsx → BillboardPage → useMovies → api.js → Symfony/MariaDB → setMovies → FunctionCard → SeatsPage",.75,6.28,11.85,.28,12,W,True,"Consolas",PP_ALIGN.CENTER)
+txt(s,"Si la API falla, useMovies carga frontend/src/data/movies.js y avisa que muestra datos de demostración.",.7,6.87,11.9,.25,10,O,True,align=PP_ALIGN.CENTER)
+
 def divider(section, title, body, accent):
  s=prs.slides.add_slide(prs.slide_layouts[6]); s.background.fill.solid(); s.background.fill.fore_color.rgb=N
  box(s,0,0,.18,7.5,accent); txt(s,section,.75,.75,4,.3,12,accent,True)
@@ -250,12 +258,22 @@ divider("PARTE 2", "Frontend React", "Cómo se organiza la interfaz, qué son lo
 divider("PARTE 1", "Backend Symfony", "Dónde viven los endpoints, cómo se validan parámetros y cómo Repository, Doctrine ORM y MariaDB obtienen los datos.", C)
 divider("PARTE 3", "Producción", "Cómo transformar el proyecto local con XAMPP en una publicación segura y verificable dentro de Hostinger compartido.", G)
 
+# Ejemplo concreto de componente reutilizable. En el orden narrativo aparece
+# después de la estructura del frontend y antes de explicar los hooks.
+s=base("COMPONENTES",26,"Ejemplo simple: el componente Poster","Una pieza pequeña se define una sola vez y recibe datos distintos mediante props.")
+box(s,.45,1.95,6.35,3.95,N2,True,RGBColor(42,57,80))
+txt(s,"frontend/src/components/movies/Poster.jsx",.72,2.18,5.8,.3,13,C,True,"Consolas")
+txt(s,"export function Poster({ movie, large = false }) {\n  return (\n    <div\n      className={`poster ${large ? 'poster-large' : ''}`}\n      style={{ '--c1': movie.colors[0],\n               '--c2': movie.colors[1] }}\n    >\n      <span>CINE MAX</span>\n      <strong>{movie.short}</strong>\n      <small>Solo en cines</small>\n    </div>\n  );\n}",.72,2.65,5.75,2.95,12,W,False,"Consolas")
+card(s,"QUÉ RECIBE","movie: datos de la película.\nlarge: decide si agrega la clase poster-large.",7.15,1.95,5.7,1.25,O,"PROPS")
+card(s,"DÓNDE SE REUTILIZA","Directamente: HomePage y MovieDetailPage.\n\nTambién dentro de MovieTile, FunctionCard y MiniMovie.",7.15,3.45,5.7,1.55,G,"5 USOS")
+card(s,"VENTAJA","Las páginas sólo escriben <Poster movie={movie} large /> y no repiten su estructura ni sus estilos.",7.15,5.25,5.7,1.15,C,"REUTILIZAR")
+
 # Orden narrativo: backend → frontend/HTTP → producción → referencias.
 order = [
  0, 29, 30, 31,
- 33, 13, 26, 20, 15, 16, 17, 18, 19, 2,
- 32, 23, 24, 25, 7, 8, 14, 21, 22, 12,
- 34, 1, 3, 4, 27, 5, 6, 9, 10, 11,
+ 34, 13, 26, 20, 15, 16, 17, 18, 19, 2,
+ 33, 32, 23, 24, 36, 25, 7, 8, 14, 21, 22, 12,
+ 35, 1, 3, 4, 27, 5, 6, 9, 10, 11,
   28,
 ]
 slide_ids = list(prs.slides._sldIdLst)

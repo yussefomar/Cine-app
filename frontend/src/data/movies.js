@@ -1,26 +1,62 @@
 export const movies = [
-  {
-    id: 1, title: 'Garfield: La película', short: 'GARFIELD', genre: 'Animación · Comedia',
-    duration: 101, rating: 'ATP', format: '2D', room: 1, times: ['14:00', '16:30', '19:00', '21:30'],
-    description: 'Garfield deja su cómoda vida para embarcarse en una aventura inesperada.',
-    colors: ['#ff8a00', '#cf3300'], price: 8200
-  },
-  {
-    id: 2, title: 'Furiosa: De la saga Mad Max', short: 'FURIOSA', genre: 'Acción · Aventura',
-    duration: 148, rating: '+13', format: '3D', room: 2, times: ['13:00', '16:00', '19:15', '22:15'],
-    description: 'Una heroína forja su camino de regreso en un mundo devastado.',
-    colors: ['#e4b633', '#202b1e'], price: 9900
-  },
-  {
-    id: 3, title: 'Guardianes de la Galaxia Vol. 3', short: 'GUARDIANES', genre: 'Ciencia ficción · Aventura',
-    duration: 126, rating: 'ATP', format: 'IMAX', room: 3, times: ['13:30', '16:45', '20:00', '22:45'],
-    description: 'El equipo se enfrenta a su pasado para proteger el universo una vez más.',
-    colors: ['#2448a5', '#7c1d54'], price: 11500
-  },
-  {
-    id: 4, title: 'Intensa-Mente 2', short: 'INTENSA MENTE 2', genre: 'Animación · Familia',
-    duration: 96, rating: 'ATP', format: '2D', room: 4, times: ['12:15', '15:10', '18:10'],
-    description: 'Nuevas emociones llegan a la mente de Riley y cambian todo.',
-    colors: ['#7d38b5', '#ec4d8d'], price: 8200
-  }
+    {
+        id: 1,
+        title: 'Garfield: La película',
+        short: 'GARFIELD',
+        genre: 'Animación · Comedia',
+        duration: 101,
+        rating: 'ATP',
+        format: '2D',
+        room: 1,
+        times: ['14:00', '16:30', '19:00', '21:30'],
+        description:
+            'Garfield deja su cómoda vida para embarcarse en una aventura inesperada.',
+        colors: ['#ff8a00', '#cf3300'],
+        price: 8200,
+    },
+    {
+        id: 2,
+        title: 'Furiosa: De la saga Mad Max',
+        short: 'FURIOSA',
+        genre: 'Acción · Aventura',
+        duration: 148,
+        rating: '+13',
+        format: '3D',
+        room: 2,
+        times: ['13:00', '16:00', '19:15', '22:15'],
+        description:
+            'Una heroína forja su camino de regreso en un mundo devastado.',
+        colors: ['#e4b633', '#202b1e'],
+        price: 9900,
+    },
+    {
+        id: 3,
+        title: 'Guardianes de la Galaxia Vol. 3',
+        short: 'GUARDIANES',
+        genre: 'Ciencia ficción · Aventura',
+        duration: 126,
+        rating: 'ATP',
+        format: 'IMAX',
+        room: 3,
+        times: ['13:30', '16:45', '20:00', '22:45'],
+        description:
+            'El equipo se enfrenta a su pasado para proteger el universo una vez más.',
+        colors: ['#2448a5', '#7c1d54'],
+        price: 11500,
+    },
+    {
+        id: 4,
+        title: 'Intensa-Mente 2',
+        short: 'INTENSA MENTE 2',
+        genre: 'Animación · Familia',
+        duration: 96,
+        rating: 'ATP',
+        format: '2D',
+        room: 4,
+        times: ['12:15', '15:10', '18:10'],
+        description:
+            'Nuevas emociones llegan a la mente de Riley y cambian todo.',
+        colors: ['#7d38b5', '#ec4d8d'],
+        price: 8200,
+    },
 ];

@@ -9,19 +9,24 @@ import { SeatsPage } from './pages/SeatsPage';
 import { TicketsPage } from './pages/TicketsPage';
 
 function App() {
-  return <>
-    <Header />
-    <Routes>
-      <Route path="/" element={<HomePage />} />
-      <Route path="/cartelera" element={<BillboardPage />} />
-      <Route path="/pelicula/:id" element={<MovieDetailPage />} />
-      <Route path="/funcion/:screeningId/asientos" element={<SeatsPage />} />
-      <Route path="/pago" element={<PaymentPage />} />
-      <Route path="/entradas" element={<TicketsPage />} />
-      <Route path="*" element={<HomePage />} />
-    </Routes>
-    <Footer />
-  </>;
+    return (
+        <>
+            <Header />
+            <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/cartelera" element={<BillboardPage />} />
+                <Route path="/pelicula/:id" element={<MovieDetailPage />} />
+                <Route
+                    path="/funcion/:screeningId/asientos"
+                    element={<SeatsPage />}
+                />
+                <Route path="/pago" element={<PaymentPage />} />
+                <Route path="/entradas" element={<TicketsPage />} />
+                <Route path="*" element={<HomePage />} />
+            </Routes>
+            <Footer />
+        </>
+    );
 }
 
 export default App;
