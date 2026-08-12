@@ -17,6 +17,8 @@ public_html/
 ├── public/
 └── ...
 
+eliminar de gitignore general y el particual dentro de frontend-src la carpeta dist/
+porque la vamos a subir.
 En public_html/.htaccess usarías para que el 
  navegador seguirá mostrando las URLs normales; 
 no mostrará /frontend/dist.:
