@@ -16,9 +16,9 @@ public_html/
 ├── src/
 ├── public/
 └── ...
-
 eliminar de gitignore general y el particual dentro de frontend-src la carpeta dist/
 porque la vamos a subir.
+
 En public_html/.htaccess usarías para que el 
  navegador seguirá mostrando las URLs normales; 
 no mostrará /frontend/dist.:
@@ -39,3 +39,117 @@ RewriteRule ^ frontend/dist/index.html [L]
 
 cd frontend
 npm run dev
+
+CON ESTO YA FUNCIONA EL FRONTEND
+
+AHORA VAMOS A VER COMO FUNCIONA EL EL FRONTEND CON EL BACKEND.
+
+public_html/
+├ 
+├── frontend/
+│   └── SRC/
+│       ├   
+│       │└── services/
+        │     └── api.js
+	│
+	└── env.production
+el archivo api.js en el frontend es el que utiliza la api de symfony entonces
+para eso mampea en archivo .env.development  pero ahora quiero a produccion entonces uso
+ .env.production
+
+VITE_API_URL=/api
+
+Vite incorpora la variable durante el build; crearla después en Hostinger no cambia el JavaScript ya compilado.
+
+Para conectar el frontend con la API necesitas configurar estas partes, en este orden:
+Base de datos MySQL en Hostinger
+1-Crea una base de datos y un usuario desde el panel. Guarda:
+mysql -h localhost -u u248219389_cine -p
+Nombre de la base
+Usuario
+Contraseña Tecnica3
+Host de MySQL
+
+2-Configuración privada de Symfony
+.env.local porque Symfony no obliga a crearlo. 
+Es un archivo opcional para sobrescribir valores de 
+.env en cada computadora o servidor.
+
+SELECT VERSION();
+11.8.8-MariaDB-log
+
+En Hostinger crea public_html/.env.local:
+APP_ENV=prod
+APP_DEBUG=0
+APP_SECRET=una-clave-larga-y-aleatoria
+
+DATABASE_URL="mysql://USUARIO:CONTRASEÑA@HOST:3306/BASE_DE_DATOS?serverVersion=mariadb-10.11&charset=utf8mb4"
+
+CORS_ALLOW_ORIGIN=https://mepacademia.net
+DEFAULT_URI=https://mepacademia.net
+
+3-Dependencias PHP
+Hostinger necesita PHP 8.2 o superior. Desde SSH:
+cd ~/domains/mepacademia.net/public_html
+php -v
+composer --version
+composer install --no-dev --optimize-autoloader
+
+/opt/alt/php83/usr/bin/php -v
+which composer Composer está en /usr/local/bin/composer.
+Ya estás dentro de public_html.
+
+/opt/alt/php83/usr/bin/php "$(which composer)" install --no-dev --optimize-autoloader
+
+Si Hostinger no dispone de Composer, habrá que generar vendor localmente y subirlo.
+
+---Luego comprueba la conexión:
+php bin/console doctrine:query:sql "SELECT 1" --env=prod
+--si funciona
+4-Crear las tablas
+Desde SSH:   
+/opt/alt/php83/usr/bin/php bin/console doctrine:migrations:migrate --no-interaction --env=prod
+
+finalmente 
+/opt/alt/php83/usr/bin/php bin/console cache:clear --env=prod
+/opt/alt/php83/usr/bin/php bin/console doctrine:migrations:status --env=prod
+
+segundo confirma que no quedaron migraciones pendientes;
+ el tercero prepara la configuración cacheada de producción.
+
+5-Permisos de Symfony
+Symfony debe poder escribir en var:
+mkdir -p var/cache var/log
+chmod -R 775 var
+
+6- el htacess
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # 1. Enviar /api y /api/... hacia Symfony
+    RewriteRule ^api(?:/.*)?$ public/index.php [QSA,END]
+
+    # 2. Servir archivos generados por Vite desde frontend/dist
+    RewriteCond %{DOCUMENT_ROOT}/frontend/dist/$1 -f [OR]
+    RewriteCond %{DOCUMENT_ROOT}/frontend/dist/$1 -d
+    RewriteRule ^(.*)$ frontend/dist/$1 [END]
+
+    # 3. Enviar las rutas del frontend hacia React
+    RewriteRule ^ frontend/dist/index.html [END]
+</IfModule>
+
+7- recorrido final
+https://mepacademia.net/api/funciones
+                    ↓
+public_html/.htaccess
+                    ↓
+public/index.php
+                    ↓
+Symfony
+                    ↓
+.env + .env.local
+                    ↓
+MySQL
+                    ↓
+respuesta JSON
